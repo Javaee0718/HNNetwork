@@ -1,0 +1,19 @@
+.file {
+    position: relative;
+    display: inline-block;
+    background: #FFFFFF;
+    border: 0px solid #99D3F5;
+    border-radius: 0px;
+    overflow: hidden;
+    color: #FFFFFF;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}

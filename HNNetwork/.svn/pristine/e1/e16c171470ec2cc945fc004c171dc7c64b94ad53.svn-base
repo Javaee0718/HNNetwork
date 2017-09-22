@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.sys.user.dao.BusUserDao">
+
+	<!-- 查询用户,关联其角色 -->
+	<resultMap type="com.womow.henan.modules.sys.user.bean.dto.BusUserEntityDo"
+		id="userAndRole">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="nickname" property="nickname" />
+		<result column="dept" property="dept" />
+		<result column="is_del" property="isDel" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_date" property="createDate" />
+		<result column="update_user_id" property="updateUserId" />
+		<result column="update_date" property="updateDate" />
+		<collection property="roles"
+			ofType="com.womow.henan.modules.sys.security.dto.BusRoleEntityDo"
+			javaType="java.util.ArrayList">
+			<id column="roleId" property="id" />
+			<result column="role" property="role" />
+		</collection>
+	</resultMap>
+
+	<!-- 用户以及其关联角色描述 -->
+	<resultMap type="com.womow.henan.modules.sys.user.bean.dto.BusUserEntityDo"
+		id="userAndRoleDsc">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="nickname" property="nickname" />
+		<result column="dept" property="dept" />
+		<result column="is_del" property="isDel" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_date" property="createDate" />
+		<result column="update_user_id" property="updateUserId" />
+		<result column="update_date" property="updateDate" />
+		<collection property="roleDes" ofType="java.lang.String"
+			javaType="java.util.ArrayList">
+			<result column="roleDes" property="roleDes" />
+		</collection>
+	</resultMap>
+
+	<sql id="userField">
+		user.id,
+		user.username,
+		user.nickname,
+		user.password,
+		user.dept,
+		user.is_del,
+		user.create_user_id,
+		user.create_date,
+		user.update_user_id,
+		user.update_date
+	</sql>
+
+	<!-- 根据用户名与密码查询改用户 -->
+	<!-- 根据用户名查询该对象 -->
+	<select id="find"
+		resultType="com.womow.henan.modules.sys.user.bean.dto.BusUserEntityDo">
+		select
+		<include refid="userField" />
+		from b_usertab as user
+		<where>
+			username = #{username}
+			<if test="password != null and password != ''">
+				and password = #{password}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询该用户的所有权限 -->
+	<!-- 因为用户.角色,权限有禁用,所以,暂未优化 -->
+	<select id="findAllPerms" resultType="java.lang.String">
+		SELECT
+		distinct
+		authority.authority
+		FROM
+		b_usertab as user
+		LEFT JOIN b_user_roletab AS
+		user_role ON
+		`user`.id =
+		user_role.user_id
+		LEFT JOIN b_roletab AS role ON
+		user_role.role_id =
+		role.id
+		LEFT JOIN b_role_authority AS
+		role_authority
+		ON
+		user_role.role_id =
+		role_authority.role_id
+		LEFT JOIN
+		b_authoritytab AS
+		authority ON role_authority.authority_id =
+		authority.id
+		WHERE
+		`user`.id =
+		#{id}
+		AND USER .is_del = 1
+		AND
+		user_role.is_del = 1
+		AND role.is_del = 1
+		AND role_authority.is_del = 1
+		AND authority.is_del = 1
+	</select>
+
+	<!-- 查询所有user -->
+	<!-- 按照创建时间降序 -->
+	<!-- 分页查询 -->
+	<select id="findAll" resultMap="userAndRoleDsc">
+		select
+		<include refid="userField" />
+		,
+		role.role as roleDes
+		from (select u.* from b_usertab as u
+		order
+		by
+		u.create_date desc
+		<if test="offset != null and limit != null">
+			limit #{offset},#{limit}
+		</if>
+		) as user LEFT JOIN b_user_roletab as user_role on `USER`.id =
+		user_role.user_id
+		AND user_role.is_del = 1
+		LEFT JOIN b_roletab as role
+		ON role.id = user_role.role_id AND role.is_del
+		= 1
+		order by
+		user.create_date desc
+	</select>
+
+	<!-- 查询数据总量 -->
+	<select id="dataCount" resultType="int">
+		select count(1)
+		from b_usertab
+		as user
+		<where>
+			<if test="username != null and username != ''">
+				user.username = #{username}
+			</if>
+		</where>
+	</select>
+
+	<!-- 添加用户的方法 -->
+	<insert id="save">
+		<selectKey keyProperty="id" resultType="int">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+		insert into b_usertab(
+		username,
+		nickname,
+		password,
+		dept,
+		is_del,
+		create_user_id,
+		create_date,
+		update_user_id,
+		update_date
+		) values (
+		#{username},
+		#{nickname},
+		#{password},
+		#{dept},
+		#{isDel},
+		#{createUserId},
+		#{createDate},
+		#{updateUserId},
+		#{updateDate}
+		)
+	</insert>
+
+	<!-- 根据用户ID查询该用户 -->
+	<select id="findById" resultMap="userAndRole">
+		SELECT
+		<include refid="userField" />
+		,
+		role.id as roleId,role.role as role
+		FROM b_usertab as user
+		LEFT JOIN
+		b_user_roletab as user_role ON `user`.id = user_role.user_id AND user_role.is_del = '1'
+		LEFT JOIN
+		b_roletab as role ON user_role.role_id =
+		role.id and role.is_del = 1
+		WHERE
+		user.id = #{id}
+	</select>
+
+	<!-- 修改用户信息 -->
+	<update id="update">
+		update b_usertab
+		<set>
+			<if test="username != null and username != ''">username = #{username}, </if>
+			<if test="nickname != null and nickname != ''">nickname = #{nickname}, </if>
+			<if test="password != null and password != ''">password = #{password}, </if>
+			<if test="dept != null and dept != ''">dept = #{dept}, </if>
+			<if test="isDel != null">is_del = #{isDel}, </if>
+			<if test="createUserId != null and createUserId != ''">create_user_id = #{createUserId}, </if>
+			<if test="createDate != null">createDate = #{createDate}, </if>
+			<if test="updateUserId != null and updateUserId != ''">update_user_id = #{updateUserId}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<!-- 批量删除用户 -->
+	<update id="delete">
+		update b_usertab
+		<set>
+			is_del = 0,
+			<if test="userId != null and userId != ''">update_user_id = #{userId}, </if>
+			<if test="date != null">update_date = #{date}</if>
+		</set>
+		<where>
+			id in
+			<if test="ids.length > 0">
+				<foreach collection="ids" item="id" open="(" separator=","
+					close=")">
+					#{id}
+				</foreach>
+			</if>
+		</where>
+	</update>
+
+	<select id="findRoleByUserId" resultType="java.lang.String">
+		SELECT DISTINCT
+			role.role
+		FROM b_user_roletab as user_role
+			JOIN b_roletab AS role ON user_role.role_id = role.id
+		WHERE user_role.is_del = '1' AND role.is_del = '1'
+			AND user_role.user_id = #{id}
+	</select>
+</mapper>

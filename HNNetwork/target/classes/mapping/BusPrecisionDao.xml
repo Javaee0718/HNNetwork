@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.province.dao.BusPrecisionDao">
+
+	<!-- 保存该对象  -->
+	<insert id="save">
+		insert into b_precision(   
+			year,
+			month,
+			head_dept,
+			quota_name,
+			quota_value,
+			not_end_quota_name,
+			not_end_quota_value,
+			end_quota_name,
+			end_quota_value
+		) values (
+			#{year},
+			#{month},
+			#{headDept},
+			#{quotaName},
+			#{quotaValue},
+			#{notEndQuotaName},
+			#{notEndQuotaValue},
+			#{endQuotaName},
+			#{endQuotaValue}
+		)
+	</insert>
+	
+	<!-- 根据日期,部门 删除数据 -->
+	<delete id="delete">
+		DELETE
+		FROM
+			b_precision
+		WHERE
+			YEAR = #{year}
+		AND MONTH = #{month}
+		AND head_dept in 
+		<foreach collection="depts" open="(" close=")" item="dept" separator=",">
+			#{dept}
+		</foreach>
+	</delete>
+</mapper>

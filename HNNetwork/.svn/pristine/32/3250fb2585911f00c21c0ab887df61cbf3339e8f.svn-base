@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.sys.user.dao.BusUserRoleDao">
+
+	<sql id="userRoleField">
+		userRole.id,
+		userRole.role_id,
+		userRole.user_id,
+		userRole.is_del
+	</sql>
+
+	<!-- 维护,添加用户与角色的关联关系 -->
+	<insert id="save">
+		insert into b_user_roletab (
+		role_id,
+		user_id,
+		is_del
+		)values (
+		#{roleId},
+		#{userId},
+		#{isDel}
+		)
+	</insert>
+
+	<!-- 通过用户ID,断掉其余角色的关联 -->
+	<update id="delete">
+		update b_user_roletab
+		<set>
+			is_del = 0
+		</set>
+		<where>
+			user_id = #{userId}
+		</where>
+	</update>
+</mapper>

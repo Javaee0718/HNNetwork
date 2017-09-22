@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.province.dao.BusValueDao">
+
+
+	<!-- 添加单个段位对象操作
+		通过唯一索引,index_update
+		对表中数据进行添加/更新操作
+	 -->
+	<insert id="save"
+		parameterType="com.womow.henan.modules.province.bean.dto.BusValueEntityDo"
+		>
+		replace into b_valuetab (
+		year,
+		part_year,
+		quota_name,
+		head_dept,
+		quota_full_mark,
+		publish_cycle,
+		quota_unit,
+		appraise_method,
+		pos_and_negDir,
+		attribute,
+		now_year_tar_grade,
+		now_year_tar_score,
+		now_year_tar_value,
+		check_base_line_grade,
+		check_base_line_score,
+		quota_type,
+		create_user_id,
+		create_date,
+		update_user_id,
+		update_date
+		) values (
+		#{year},
+		#{partYear},
+		#{quotaName},
+		#{headDept},
+		#{quotaFullMark},
+		#{publishCycle},
+		#{quotaUnit},
+		#{appraiseMethod},
+		#{posAndNegDir},
+		#{attribute},
+		#{nowYearTarGrade},
+		#{nowYearTarScore},
+		#{nowYearTarValue},
+		#{checkBaseLineGrade},
+		#{checkBaseLineScore},
+		#{quotaType},
+		#{createUserId},
+		#{createDate},
+		#{updateUserId},
+		#{updateDate}
+		)
+	</insert>
+</mapper>

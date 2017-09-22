@@ -1,0 +1,16 @@
+# dataSource configuration
+driverClass=com.mysql.jdbc.Driver
+jdbcUrl=jdbc:mysql:///hnwork?characterEncoding=UTF-8
+user=root
+password=root
+
+# springmvc view's prefix and suffix
+prefix=/WEB-INF/
+suffix=.jsp
+
+# excel model location
+excel_opposite_location=/excelModel/\u6D4B\u8BD5\u6A21\u677F.zip
+
+# paging
+page=1
+limit=2

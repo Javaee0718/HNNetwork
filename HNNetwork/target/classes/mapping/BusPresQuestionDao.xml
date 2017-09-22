@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.province.dao.BusPresQuestionDao">
+
+	<!-- 保存该对象 -->
+	<insert id="save">
+		insert into b_presQuestion(
+		year,
+		month,
+		quota_name,
+		monitor_date,
+		question_type,
+		duty_unit,
+		question_reason,
+		cure_opinion,
+		cure_term,
+		cure_result
+		) values (
+		#{year},
+		#{month},
+		#{quotaName},
+		#{monitorDate},
+		#{questionType},
+		#{dutyUnit},
+		#{questionReason},
+		#{cureOpinion},
+		#{cureTerm},
+		#{cureResult}
+		)
+	</insert>
+</mapper>

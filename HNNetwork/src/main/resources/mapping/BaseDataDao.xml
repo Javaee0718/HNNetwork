@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.commons.dao.BaseDataDao">
+
+	<select id="findByType" resultType="com.womow.henan.commons.bean.BaseDataEntity">
+		SELECT bd.`name`
+		from
+		b_base_datatab AS bd
+		WHERE bd.type = #{type}
+	</select>
+</mapper>

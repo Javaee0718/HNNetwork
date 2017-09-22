@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.sys.user.dao.BusAuthorityDao">
+
+	<sql id="authorityField">
+		authority.id,
+		authority.authority,
+		authority.description,
+		authority.type,
+		authority.is_del,
+		authority.create_user_id,
+		authority.create_date,
+		authority.update_user_id,
+		authority.update_date
+	</sql>
+
+	<!-- 查询所有权限的权限标识 -->
+	<select id="findAllPermis" resultType="java.lang.String">
+		select authority.authority
+		from b_authoritytab as authority
+		<where>
+			authority.is_del = 1
+		</where>
+	</select>
+
+	<select id="findAll"
+		resultType="com.womow.henan.modules.sys.security.dto.BusAuthorityEntityDo">
+		select
+		<include refid="authorityField" />
+		from b_authoritytab as authority
+		<where>
+			<if test="isDel != null and isDel != ''">
+				authority.is_del = #{isDel}
+			</if>
+			<if test="type != null and type != ''">
+				and type = #{type}
+			</if>
+		</where>
+	</select>
+</mapper>

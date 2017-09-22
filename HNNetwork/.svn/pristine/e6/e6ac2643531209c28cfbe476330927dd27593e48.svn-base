@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.province.dao.BusMainIndexDao">
+	
+	<!-- 查询视图中所有的部门名称 -->
+	<select id="findAllHeadDept" resultType="java.lang.String">
+		SELECT head_dept 
+		FROM dataview 
+		GROUP BY head_dept;
+	</select>
+
+	<!-- 获取河南省各部门的所有D段出现次数 -->
+	<select id="findHenanDGrade" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*) count,head_dept 
+		FROM dataview 
+		WHERE henanGrade='1' 
+		GROUP BY head_dept;
+	</select>
+	
+	<!-- 获取河南省各部门的所有E段出现次数 -->
+	<select id="findHenanEGrade" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*) count,head_dept 
+		FROM dataview 
+		WHERE henanGrade='0' 
+		GROUP BY head_dept;
+	</select>
+	
+	<!-- 获取2016年全年河南省的所有段位出现次数 -->
+	<select id="findHenanGradeBy2016wholeYear" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*) count,henanGrade 
+		FROM dataview 
+		WHERE part_year='全年' 
+		GROUP BY henanGrade;
+	</select>
+	
+	<!-- 获取2017年上半年河南省的所有段位出现次数 -->
+	<select id="findHenanGradeBy2017firsthalfYear" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*) count,henanGrade 
+		FROM dataview 
+		WHERE part_year='上半年' 
+		GROUP BY henanGrade;
+	</select>
+	
+	<!-- 获取2017年第一季度河南省的所有段位出现次数 -->
+	<select id="findHenanGradeBy2017season1Year" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*) count,henanGrade 
+		FROM dataview 
+		WHERE part_year='第一季度' 
+		GROUP BY henanGrade;
+	</select>
+	
+	<!-- 获取各年度河南省的所有段位出现次数 -->
+	<select id="countHenanGradeByYear" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*),henanGrade,YEAR,part_year 
+		FROM dataview 
+		GROUP BY henanGrade,YEAR,part_year 
+		ORDER BY YEAR,part_year,henanGrade;
+	</select>
+	
+	<!-- 获取河南省的各部门所有段位出现次数 -->
+	<select id="countHenanGrade" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*),henanGrade,head_dept 
+		FROM dataview 
+		GROUP BY henanGrade,head_dept 
+		ORDER BY henanGrade;
+	</select>
+
+</mapper>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.province.dao.BusDataManageDao">
+
+	<sql id="dataViewField">
+		id,
+		module_name,
+		child_quota_name,
+		year,
+		part_year,
+		quota_name,
+		head_dept,
+		quota_full_mark,
+		publish_cycle,
+		quota_unit,
+		appraise_method,
+		pos_and_negDir,
+		attribute,
+		now_year_tar_grade,
+		now_year_tar_score,
+		now_year_tar_value,
+		check_base_line_grade,
+		check_base_line_score,
+		create_user_id,
+		create_date,
+		update_user_id,
+		update_date,
+		henanScore,
+		beijingScore,
+		tianjinScore,
+		hebeiScore,
+		yibeiScore,
+		shanxiScore,
+		shandongScore,
+		shanghaiScore,
+		zhejiangScore,
+		anhuiScore,
+		fujianScore,
+		hubeiScore,
+		hunanScore,
+		jiangxiScore,
+		sichuanScore,
+		chongqingScore,
+		liaoningScore,
+		jilinScore,
+		heilongjiangScore,
+		mengdongScore,
+		shanxi1Score,
+		gansuScore,
+		qinghaiScore,
+		ningxiaScore,
+		xinjiangScore,
+		quotaType,
+		henanValue,
+		beijingValue,
+		tianjinValue,
+		hebeiValue,
+		yibeiValue,
+		shanxiValue,
+		shandongValue,
+		shanghaiValue,
+		jiangsuValue,
+		zhejiangValue,
+		anhuiValue,
+		fujianValue,
+		hubeiValue,
+		hunanValue,
+		jiangxiValue,
+		sichuanValue,
+		chongqingValue,
+		liaoningValue,
+		jilinValue,
+		heilongjiangValue,
+		mengdongValue,
+		shanxi1Value,
+		gansuValue,
+		qinghaiValue,
+		ningxiaValue,
+		xinjiangValue,
+		henanGrade,
+		beijingGrade,
+		tianjinGrade,
+		hebeiGrade,
+		yibeiGrade,
+		shanxiGrade,
+		shandongGrade,
+		shanghaiGrade,
+		jiangsuGrade,
+		zhejiangGrade,
+		anhuiGrade,
+		fujianGrade,
+		hubeiGrade,
+		hunanGrade,
+		jiangxiGrade,
+		sichuanGrade,
+		chongqingGrade,
+		liaoningGrade,
+		jilinGrade,
+		heilongjiangGrade,
+		mengdongGrade,
+		shanxi1Grade,
+		gansuGrade,
+		qinghaiGrade,
+		ningxiaGrade,
+		xinjiangGrade
+	</sql>
+
+	<!-- -->
+	<select id="dataCount" resultType="int">
+		select count(1)
+		FROM dataview AS dv
+		<where>
+			dv.`year` = #{year} AND dv.part_year = #{partYear}
+			AND dv.is_big_quota
+			= '1'
+			<if test="module != null and module != ''">
+				and module_name = #{module}
+			</if>
+			<if test="quotaNames != null and quotaNames != ''">
+				and quota_name like concat('%',#{quotaNames},'%')
+			</if>
+			<if test="quotaType != null and quotaType != ''">
+				and quotaType like concat('%',#{quotaType},'%')
+			</if>
+			<if test="attribute != null and attribute != ''">
+				and attribute = #{attribute}
+			</if>
+			<if test="headDept != null and headDept != ''">
+				and head_dept = #{headDept}
+			</if>
+			<if test="publishCycle != null and publishCycle != ''">
+				and publish_cycle = #{publishCycle}
+			</if>
+			<if test="appraiseMethod != null and appraiseMethod != ''">
+				and appraise_method = #{appraiseMethod}
+			</if>
+			<if test="posAndNegDir != null and posAndNegDir != ''">
+				and pos_and_negDir = #{posAndNegDir}
+			</if>
+			<if test="quotaUnit != null and quotaUnit != ''">
+				and quota_unit = #{quotaUnit}
+			</if>
+			<if test="childQuotaName != null and childQuotaName != ''">
+				and child_quota_name = #{childQuotaName}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询视图中所有的模块名称(可能含有"") -->
+	<select id="findAllQuotaName" resultType="java.lang.String">
+		SELECT DISTINCT
+		dv.quota_name
+		FROM dataview AS dv
+		<where>
+			dv.`year` = #{year} AND dv.part_year = #{partYear}
+			AND dv.is_big_quota
+			= '1'
+			<if test="module != null and module != ''">
+				and module_name = #{module}
+			</if>
+			<if test="quotaNames != null and quotaNames != ''">
+				and quota_name like concat('%',#{quotaNames},'%')
+			</if>
+			<if test="quotaType != null and quotaType != ''">
+				and quotaType like concat('%',#{quotaType},'%')
+			</if>
+			<if test="attribute != null and attribute != ''">
+				and attribute = #{attribute}
+			</if>
+			<if test="headDept != null and headDept != ''">
+				and head_dept = #{headDept}
+			</if>
+			<if test="publishCycle != null and publishCycle != ''">
+				and publish_cycle = #{publishCycle}
+			</if>
+			<if test="appraiseMethod != null and appraiseMethod != ''">
+				and appraise_method = #{appraiseMethod}
+			</if>
+			<if test="posAndNegDir != null and posAndNegDir != ''">
+				and pos_and_negDir = #{posAndNegDir}
+			</if>
+			<if test="quotaUnit != null and quotaUnit != ''">
+				and quota_unit = #{quotaUnit}
+			</if>
+			<if test="childQuotaName != null and childQuotaName != ''">
+				and child_quota_name = #{childQuotaName}
+			</if>
+		</where>
+		<if test="offset != null and limit != null">
+			limit #{offset},#{limit}
+		</if>
+	</select>
+
+	<!-- 根据板块 年 季度查询指标名 -->
+	<select id="queryQuotaNameByYearAndModule" resultType="java.lang.String">
+		SELECT
+		DISTINCT dv.quota_name
+		FROM dataview AS dv
+		WHERE dv.`year` = #{year}
+		AND
+		dv.part_year = #{partYear}
+		AND dv.module_name = #{module}
+	</select>
+
+	<!-- 查询视图表中的所有数据,条件查询... -->
+	<select id="queryByYearAndModule"
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		select
+		<include refid="dataViewField" />
+		from dataView
+		<where>
+			year = #{year}
+			and part_year = #{partYear}
+			and quota_name like
+			concat('%',#{quotaName},'%')
+		</where>
+	</select>
+
+	<!-- 获取视图中最新的year -->
+	<select id="findNewYear" resultType="java.lang.String">
+		SELECT MAX(year)
+		from
+		dataview
+	</select>
+
+	<!-- findPartYearByYear -->
+	<select id="findPartYearByYear" resultType="java.lang.String">
+		SELECT DISTINCT
+		part_year
+		from dataview
+		WHERE `year` = #{year}
+	</select>
+
+	<!-- 获取该年河南省的所有实际段位 -->
+	<select id="findHenanGradeByYear" resultType="int">
+		SELECT DISTINCT
+		dv.henanGrade
+		FROM dataview AS dv
+		WHERE dv.`year` = #{year}
+	</select>
+
+	<!-- 获取该年河南省的所有实际值 -->
+	<select id="findHenanValueByYear" resultType="int">
+		SELECT DISTINCT
+		dv.henanValue
+		FROM dataview AS dv
+		WHERE dv.`year` = #{year}
+	</select>
+
+	<!-- 查询视图中的所有的年 -->
+	<select id="findYears" resultType="int">
+		select DISTINCT dv.`year`
+		FROM
+		dataview AS dv
+		ORDER BY dv.`year` DESC
+	</select>
+
+	<!-- 查询该年该季度下的所有版块  -->
+	<select id="findallModules" resultType="java.lang.String">
+		SELECT DISTINCT
+		dv.module_name
+		FROM dataview AS dv
+		WHERE dv.`year` = #{year} AND
+		dv.part_year = #{partYear}
+	</select>
+</mapper>

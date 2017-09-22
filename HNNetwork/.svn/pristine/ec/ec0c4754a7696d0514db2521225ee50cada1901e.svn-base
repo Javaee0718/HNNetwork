@@ -1,0 +1,178 @@
+@charset "UTF-8";
+/* CSS Reset */
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;empty-cells:show;margin:0;padding:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}
+input{ list-style:none;}
+del,ins{text-decoration:none;}
+/*ul,li{list-style:none;}*/
+caption,th{text-align:left;}
+strong{ font-weight:bold}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+q:before,q:after{content0:'';}
+abbr,acronym{border:0;font-variant:normal;}
+sup{vertical-align:baseline;}
+sub{vertical-align:baseline;}
+legend{color:#000;}
+em { font-style:normal;}
+input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
+input,button,textarea,select{*font-size:100%;}
+input {vertical-align:middle;}
+
+
+body{line-height:22px;color:#383838; background:#016ba9; font-family:"microsoft yahei"; font-size:12px;background:#02534a;}
+
+a{ color:#383838; text-decoration:none;}	
+a:hover{ color:#a7030c; text-decoration:underline;}
+
+.wrap{width:1162px;margin:0 auto;text-align:center;overflow:hidden;}
+
+	
+.box_login {overflow:hidden;float:left;display:inline; position:absolute; top:50%; margin-top:-202px;width:641px; text-align:left; background:url(../images/loginbg.png) center no-repeat; height:404px; left:50%; margin-left:-320px}	 
+	.box_login .logins {width:298px;float:left; display:inline;overflow:hidden; margin:0 auto; padding:15px 23px; margin-left:150px; margin-top:140px;font-size:14px;}
+	.box_login .logins li{width:291px;float:left; display:inline;overflow:hidden; margin:0 auto;height:41px; border:1px solid #e5e5e5; margin-top:15px}
+	.box_login .logins li .pic{width:41px;float:left; display:inline;overflow:hidden; margin:0 auto;line-height:41px; color:#ffffff; text-align:right; font-size:14px; font-weight:bold;}
+	.box_login .logins li .inputbox { width:250px;float:left; display:inline;overflow:hidden; margin:0 auto;height:41px; line-height:41px; background:none;}	
+	.box_login .logins li .inputbox input{  width:234px;float:left; border:0; display:inline;overflow:hidden; margin:0 auto;height:27px; line-height:27px; background:url(../images/logininputbg.png); border:0px; padding:7px 8px;}
+	.box_login .logins li.okbut{width:291px;float:left; display:inline;overflow:hidden; margin:0 auto;height:40px; border:1px solid #17635a; margin-top:15px}
+	.box_login .logins li.okbut input{ width:291px;float:left; display:inline;overflow:hidden; margin:0 auto;height:40px;line-height:40px; background:url(../images/loginbtn.png); color:#FFF; border:0; cursor:pointer; font-size:16px; letter-spacing:20px}
+	
+.w {
+	background-color: #FFFFFF;
+	float: left;
+	min-width: 320px;
+	width: 100%;
+	margin:0 auto;}
+.main {
+	padding-top: 15px;
+	padding-bottom: 15px;}
+.main #frm_login {
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.main .item {
+	position: relative;
+	width: 100%;
+}
+.main .item .txt-username,
+.main .item .txt-password,
+.main .item .txt-password_PwdTwo,
+.main .item .txt-password_PwdThree,
+.main .item .txt-captcha{
+	font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
+	margin-bottom: 10px;
+	padding-left: 10px;
+}
+.main .item .txt-phone {text-indent:80px;}
+.main .item .txt-input {
+	background: none repeat scroll 0 0 #fff;
+	border: 1px solid #D1D1D1;
+	border-radius:5px;
+	color: #252525;
+	font-size: 14px;
+	height: 44px;
+	width: 98%;
+}
+.main .item .txt-select {
+	background: none repeat scroll 0 0 #fff;
+	border: 1px solid #D1D1D1;
+	border-radius:5px;
+	color: #252525;
+	font-size: 14px;
+	height: 44px;
+	width: 100%;
+}
+.main .item-username .input-close {right: 7px;}
+.main .item .input-close {
+	cursor: pointer;
+	display: block;
+	height: 25px;
+	position: absolute;
+	top: 10px;
+	width: 25px;
+	background-attachment: scroll;
+	background-image: url(../images/u_close.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 25px;
+}
+.main .item-password .btn-off {background: url("../images/u_s1.png") no-repeat scroll 0 0 / 51px 35px;}
+.main .item-password .tp-btn {cursor: pointer;display: block;height: 35px;position: absolute; right: 10px;top: 8px; width: 51px; z-index: 1;}
+.main .item-password .btn-on {background: url("../images/u_s2.png") no-repeat scroll 0 0 / 51px 35px;}
+.main .item-password .btn-off_PwdTwo {background: url("../images/u_s1.png") no-repeat scroll 0 0 / 51px 35px;}
+.main .item-password .tp-btn_PwdTwo {cursor: pointer;display: block;height: 35px;position: absolute; right: 10px;top: 8px; width: 51px; z-index: 1;}
+.main .item-password .btn-on_PwdTwo {background: url("../images/u_s2.png") no-repeat scroll 0 0 / 51px 35px;}
+.main .item-password .btn-off_PwdThree {background: url("../images/u_s1.png") no-repeat scroll 0 0 / 51px 35px;}
+.main .item-password .tp-btn_PwdThree {cursor: pointer;display: block;height: 35px;position: absolute; right: 10px;top: 8px; width: 51px; z-index: 1;}
+.main .item-password .btn-on_PwdThree {background: url("../images/u_s2.png") no-repeat scroll 0 0 / 51px 35px;}
+.main .item-login-option {
+	font-size: 14px;
+	margin-bottom:5px;
+	height: 30px;
+}
+.main  .item-login-option  .aoutlogin  {
+	float: left;
+	margin-left: 10px;
+	font-size: 12px;
+	color: #666666;
+}
+
+.main .item-login-option .retrieve-password {
+	float: right;
+	text-align: right;
+	width: 50%;
+	margin-right: 10px;
+}
+.main .item-login-option .retrieve-password a {
+	color: #4eabe8;
+	font-size: 12px;
+	text-decoration: none;
+}
+.main .item-login-other dt {
+	color: #666;
+	font-size: 12px;
+	margin-bottom: 13px;
+}
+.main   .item-login-other   dd {
+	margin: 0px;
+}
+
+.main .item-login-other dd .qq {width: 20%;}
+.main .item-login-other dd a {float: left;}
+.main .item-login-other dd a span {display:block;height: 40px;overflow: hidden; width: 40px;}
+.ui-btn-wrap { padding-top:5px; padding-bottom:10px;}
+.ui-btn-lg {
+	cursor:pointer;
+	border-radius:5px;
+	display: block;
+	font-size: 14px;
+	height: 45px;
+	line-height: 40px;
+	width: 100%;
+	text-align:center;
+	text-decoration: none;
+}
+.ui-btn-primary {
+	background-clip: padding-box;
+	background-color: #4eabe8;
+	border-color: #4eabe8;
+	color: #fff;
+	text-decoration: none;
+}
+.ui-btn-danger{background-clip: padding-box;background-color: #248b24;border-color: #0c680c;color: #fff;}
+.ui-btn-danger:visited{background-clip: padding-box;background-color: #de3b8a;border-color: #de3b8a;color: #fff;}
+.main .item-captcha {margin-bottom: 10px;}
+.main .item-captcha .input-info {margin-bottom: 10px;}
+.main .item-captcha .input-close {right: 79px;}
+.main .item-captcha #captcha-img { border-left: 1px solid #d7d7d7;height: 25px; padding-left: 7px; position: absolute;right: 0;top: 9px;width: 79px;}
+.main .item-captcha .err-tips {
+	color: #848689;
+	font-size: 12px;
+	margin: 13px 0 0px;
+}
+.main .item-captcha .err-tips a {
+	color: #0052ce;
+	text-decoration: none;
+}

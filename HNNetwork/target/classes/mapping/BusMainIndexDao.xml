@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.province.dao.BusMainIndexDao">
+	
+	<!-- 查询视图中所有的部门名称 -->
+	<select id="findAllHeadDept" resultType="java.lang.String">
+		SELECT head_dept 
+		FROM dataview 
+		GROUP BY head_dept;
+	</select>
+
+	<!-- 获取河南省各部门的所有D段出现次数 -->
+	<select id="findHenanDGrade" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*) count,head_dept 
+		FROM dataview 
+		WHERE henanGrade='1' 
+		GROUP BY head_dept;
+	</select>
+	
+	<!-- 获取河南省各部门的所有E段出现次数 -->
+	<select id="findHenanEGrade" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*) count,head_dept 
+		FROM dataview 
+		WHERE henanGrade='0' 
+		GROUP BY head_dept;
+	</select>
+	
+	<!-- 获取各年度河南省的所有段位出现次数 -->
+	<select id="countHenanGradeByYear" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*),henanGrade,YEAR,part_year 
+		FROM dataview 
+		GROUP BY henanGrade,YEAR,part_year 
+		ORDER BY YEAR,part_year,henanGrade;
+	</select>
+	
+	<!-- 获取河南省的各部门所有段位出现次数 -->
+	<select id="countHenanGrade" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT COUNT(*) count,dv.henanGrade,dv.year,dv.part_year
+		FROM dataview dv
+		GROUP BY dv.henanGrade,dv.part_year
+		HAVING dv.henanGrade=#{henanGrade}
+	</select>
+	
+	<!-- 获取河南省2017上半年目标所有段位出现次数 -->
+	<select id="getHenanTargetGrade" 
+		resultType="com.womow.henan.modules.province.bean.dto.BusDataManageEntityDo">
+		SELECT dv.now_year_tar_grade, COUNT(1) count
+		FROM dataview AS dv
+	 	WHERE dv.`year` =  '2017' 
+	 	AND dv.part_year =  '上半年' 
+	 	AND dv.now_year_tar_grade= #{henanGrade}
+	</select>
+	
+	<!-- 获得河南省近10年综合排名 -->
+	<select id="findHenanPai" resultType="com.womow.henan.modules.province.bean.po.BusSortEntity">
+		SELECT bs.year,bs.sort 
+		FROM b_sort bs
+		order by bs.year
+	</select>
+
+</mapper>

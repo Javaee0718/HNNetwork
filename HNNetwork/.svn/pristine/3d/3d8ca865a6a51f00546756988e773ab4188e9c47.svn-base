@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/womow/henan/modules/province/controller/MainIndexController.java=UTF-8
+encoding//src/main/java/com/womow/henan/modules/province/dao/BusMainIndexDao.java=UTF-8
+encoding//src/main/java/com/womow/henan/modules/province/service/BusMainIndexService.java=UTF-8
+encoding//src/main/java/com/womow/henan/modules/province/service/impl/BusMainIndexServiceImpl.java=UTF-8
