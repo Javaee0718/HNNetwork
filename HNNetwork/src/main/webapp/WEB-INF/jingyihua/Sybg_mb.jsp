@@ -10,59 +10,59 @@
 <link href="${ctxStatic}/css/select.css" rel="stylesheet" type="text/css" />
 <!--scrollbar style-->
 <link href="${ctxStatic}/css/perfect-scrollbar.css" rel="stylesheet">
-<!--/scrollbar style-->
-<!--menu style-->
-<link href="${ctxStatic}/css/style-menu.css" rel="stylesheet">
-<!--/menu style-->
-<!--分页插件style-->
-<link type="text/css" rel="stylesheet" href="${ctxStatic}/css/simplePagination.css" />
-<!--/分页插件style-->
-<script type="text/javascript" src="${ctxStatic}/js/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="${ctxStatic}/js/select-ui.min.js"></script>
-<!--menu js-->
-<script type="text/javascript" src="${ctxStatic}/js/jquery.menu.js"></script>
-<!--/menu js-->
-<script type="text/javascript" src="${ctxStatic}/js/jquery.common.js"></script>
-<!--除IE外都可识别-->
-<!--calendar-->
-<script type="text/javascript" src="${ctxStatic}/calendarjs/laydate.js"></script>
-<!--/calendar-->
-<!--分页插件 js-->
-<script type="text/javascript" src="${ctxStatic}/js/jquery.simplePagination.js"></script>
-<!--/分页插件 js-->
-<!--[if !IE 8]><!--[if !IE 7]><!--[if !IE 6]><!-->
-<link href="css/style.css" rel="stylesheet" type="text/css" />
-<!--<![endif]-->
-<!--<![endif]-->
-<!--<![endif]-->
-<!--select options-->
-<script type="text/javascript">
-	$(document).ready(function(e) {
-		$(".select1").uedSelect({
-			width : 150
-		});
-		$(".select2").uedSelect({
-			width : 500
-		});
-	});
-</script>
-<script type="text/javascript">
-	$(function() {
-		var mydate = new Date();
-		var t = mydate.toLocaleString();
-		$("#end").text(t);
-	})
-</script>
-<!--/select options-->
+	<!--/scrollbar style-->
+	<!--menu style-->
+	<link href="${ctxStatic}/css/style-menu.css" rel="stylesheet">
+		<!--/menu style-->
+		<!--分页插件style-->
+		<link type="text/css" rel="stylesheet" href="${ctxStatic}/css/simplePagination.css" />
+		<!--/分页插件style-->
+		<script type="text/javascript" src="${ctxStatic}/js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" src="${ctxStatic}/js/select-ui.min.js"></script>
+		<!--menu js-->
+		<script type="text/javascript" src="${ctxStatic}/js/jquery.menu.js"></script>
+		<!--/menu js-->
+		<script type="text/javascript" src="${ctxStatic}/js/jquery.common.js"></script>
+		<!--除IE外都可识别-->
+		<!--calendar-->
+		<script type="text/javascript" src="${ctxStatic}/calendarjs/laydate.js"></script>
+		<!--/calendar-->
+		<!--分页插件 js-->
+		<script type="text/javascript" src="${ctxStatic}/js/jquery.simplePagination.js"></script>
+		<!--/分页插件 js-->
+		<!--[if !IE 8]><!--[if !IE 7]><!--[if !IE 6]><!-->
+		<link href="${ctxStatic}/css/style.css" rel="stylesheet" type="text/css" />
+		<!--<![endif]-->
+		<!--<![endif]-->
+		<!--<![endif]-->
+		<!--select options-->
+		<script type="text/javascript">
+			$(document).ready(function(e) {
+				$(".select1").uedSelect({
+					width : 150
+				});
+				$(".select2").uedSelect({
+					width : 500
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			$(function() {
+				var mydate = new Date();
+				var t = mydate.toLocaleString();
+				$("#end").text(t);
+			})
+		</script>
+		<!--/select options-->
 </head>
 <body>
 	<!--当前位置-->
 	<div class="place">
 		<span>位置：</span>
 		<ul class="placeul" style="width: 100%">
+			<li>首页</li>
 			<li>同业对标精益化管理</li>
 			<li>国网体系同业对标管理</li>
-			<li><font color="red"><strong>待添加中</strong></font></li>
 			<!--<li style="margin-right:0;float:right">
 			 <!--<a  href="newMainEchart.html" target="subFrame" onclick="ruturnIndex()" class="longred">返回</a>-->
 			<!--</li>-->
@@ -78,11 +78,11 @@
 		</ul>
 	</div>
 	<!--/当前位置-->
-	<%-- <div class="mainindex" id="mainindex">
+	<div class="mainindex" id="mainindex">
 		<iframe frameborder="0" valign="top" id="subFrame" name="subFrame"
-			scrolling="yes" src="${ctx}/incl/echarts/newMainEchart"
+			scrolling="yes" src="newMainEchart.html"
 			style="height: 100%; visibility: inherit; width: 100%; z-index: 2"></iframe>
-	</div> --%>
+	</div>
 	<!--height Resize js-->
 	<script type="text/javascript">
 		$(document).ready(function() {

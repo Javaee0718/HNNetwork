@@ -54,6 +54,23 @@
 <!-- 文件导入 -->
 <script type="text/javascript">
 	var message = '${message}';
+	/* 删除数据  */
+	$(function() {
+		$("#ctlBtn1").click(function() {
+			var isAdmin = '${isAdmin}'
+			if(isAdmin == '1') {
+				//是管理员
+				
+			} else {
+				//不是管理员
+				var date = $("#datepicker").val();
+				if(date) {
+					$("#delForm").submit();
+				}
+			}
+		})
+	})	
+	
 	$(function() {
 		/*init webuploader*/
 		var $list = $("#thelist"); //这几个初始化全局的百度文档上没说明，好蛋疼。  
@@ -199,9 +216,25 @@
 	</div>
 	<div
 		style="position: relative; left: 50%; top: 392px; width: 600px; height: auto; margin-left: -300px; background-color: #ebebeb; border: 1px solid #000; border-radius: 20px; padding: 10px;">
-		<form action="${ctx}/precision/delDat" method="post" onsubmit="return delDat()">
+		<form id="delForm" action="${ctx}/precision/delDat" method="post" onsubmit="return delDat()">
 			<input type="text" id="datepicker" name="date" />
 			<div style="margin: 0 auto; width: 300px; padding-top: 50px;">
+				<div style="">
+					<input type="checkbox" name="depts">安质部
+					<input type="checkbox" name="depts">办公室
+					<input type="checkbox" name="depts">财务部
+					<input type="checkbox" name="depts">发展部
+					<input type="checkbox" name="depts">后勤部
+					<input type="checkbox" name="depts">建设部
+					<input type="checkbox" name="depts">科信部
+					<input type="checkbox" name="depts">企协分会
+					<input type="checkbox" name="depts">人资部
+					<br>
+					<input type="checkbox" name="depts">调控中心
+					<input type="checkbox" name="depts">物资部
+					<input type="checkbox" name="depts">营销部
+					<input type="checkbox" name="depts">运检部
+				</div>
 				<input type="submit" id="ctlBtn1" class="btn btn-default"
 					value="删除数据">
 				<!-- <button id="ctlBtn1" class="btn btn-default">删除数据</button> -->

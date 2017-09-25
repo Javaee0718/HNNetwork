@@ -29,8 +29,17 @@
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-	<mvc:annotation-driven />
 	
+	<!-- 自定义参数类型转换器 -->
+	 <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+            	<bean class="com.womow.henan.commons.middleware.DateConverter"></bean>
+            </set>
+        </property>
+    </bean>
+    
+    <mvc:annotation-driven conversion-service="conversionService"/>
 	<mvc:default-servlet-handler />
 	<mvc:resources location="/static/**" mapping="/static/**" />
 	<aop:aspectj-autoproxy proxy-target-class="true" />
