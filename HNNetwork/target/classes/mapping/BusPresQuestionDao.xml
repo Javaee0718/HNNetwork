@@ -28,4 +28,19 @@
 		#{cureResult}
 		)
 	</insert>
+	
+	<!-- 根绝日期和一级指标名称删除数据 -->
+	<delete id="delete">
+		DELETE
+		FROM
+			b_presquestion
+		WHERE
+			YEAR = #{year}
+		AND MONTH = #{month}
+		AND quota_name in 
+		<foreach collection="quotaNames" open="(" close=")" item="quotaName"
+			separator=",">
+			#{quotaName}
+		</foreach>
+	</delete>
 </mapper>

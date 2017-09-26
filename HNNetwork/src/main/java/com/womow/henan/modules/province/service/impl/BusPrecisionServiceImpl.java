@@ -1267,6 +1267,20 @@ public class BusPrecisionServiceImpl implements BusPrecisionService {
 		map.put("year", year);
 		map.put("month", month);
 		map.put("depts", depts);
+
+		// 查询该部门下的所有一级指标名称
+		for (String dept : depts) {
+			List<String> quotaList = busPrecisionDao.findQuotaName(year, month, dept);
+			map.put("quotaNames", quotaList);
+			if (quotaList != null && quotaList.size() > 0) {
+				busPresQuestionDao.delete(map);
+			}
+		}
 		busPrecisionDao.delete(map);
+
+	}
+
+	public List<BusPrecisionEntityDo> notEndQuotaQuery(int year, int month, String quotaName) throws Exception {
+		return busPrecisionDao.findNotEndQuotaAndValue(year, month, quotaName);
 	}
 }

@@ -1,7 +1,10 @@
 package com.womow.henan.modules.province.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import com.womow.henan.modules.province.bean.dto.BusPrecisionEntityDo;
 import com.womow.henan.modules.sys.user.bean.dto.BusUserEntityDo;
 
 /**
@@ -27,4 +30,14 @@ public interface BusPrecisionService {
 	 * @param depts
 	 */
 	public void delteDat(int year, int month, String[] depts) throws Exception ;
+
+	/**
+	 * 精益化指标非末端指标展示-业扩报装服务规范率
+	 * ---> 指标格式: 均是非末端指标,均有末端指标
+	 * @param year
+	 * @param month
+	 * @param quotaName
+	 * @return
+	 */
+	public List<BusPrecisionEntityDo> notEndQuotaQuery(int year, int month, String quotaName)throws Exception;
 }

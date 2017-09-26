@@ -81,7 +81,7 @@
 						<li><a href="${ctx}/incl/jingyihua/Sybg_mb"
 							target="mainFrame"><img src="${ctxStatic}/images/menu_03.png"
 								alt="" width="16" height="16" />&nbsp;&nbsp;国网体系同业对标管理</a></li>
-						<li><a href="${ctx}/incl/jingyihua/Quanxian_set"
+						<li><a href="${ctx}/precision/toPg"
 							target="mainFrame"><img
 								src="${ctxStatic}/images/menu-set.png" alt="" width="16"
 								height="16" />&nbsp;&nbsp;数据导入</a>

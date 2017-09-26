@@ -52,25 +52,75 @@
 <!--[if !IE 8]><!--[if !IE 7]><!--[if !IE 6]><!-->
 <link href="${ctxStatic}/css/style.css" rel="stylesheet" type="text/css" />
 <!-- 文件导入 -->
+<style type="text/css">
+.unActive {
+	display: none;
+}
+</style>
+
 <script type="text/javascript">
 	var message = '${message}';
+	//全选  全不选 反选
+	$(function() {
+		// 全选
+		$(":checkbox[name='all']").click(function() {
+			$(":checkbox[name='depts']").each(function() {
+				$(this).prop("checked",$(":checkbox[name='all']").prop("checked"));
+			})
+		})
+		// 反选
+		$(":checkbox[name='opposite']").click(function() {
+			$(":checkbox[name='depts']").each(function() {
+				var isSelect = $(this).prop("checked");			
+				if(isSelect) {
+					 $(this).prop("checked",false);
+				} else {
+					 $(this).prop("checked",true);
+				}
+			})
+		})
+	})
 	/* 删除数据  */
 	$(function() {
 		$("#ctlBtn1").click(function() {
-			var isAdmin = '${isAdmin}'
-			if(isAdmin == '1') {
-				//是管理员
-				
-			} else {
-				//不是管理员
-				var date = $("#datepicker").val();
-				if(date) {
-					$("#delForm").submit();
+			var isAdmin = '${isAdmin}';
+			var status = $("#deptDiv").hasClass("unActive");
+			var length = $("input:checkbox:checked").length;
+			var date = $("#datepicker").val();
+			// yao展开
+			if (status) {
+				if (isAdmin == '1') {
+					if (length > 0) {
+						if (date) {
+							$("#delForm").submit();
+						}
+					} else {
+						$("#deptDiv").removeClass("unActive");
+						return false;
+					}
+				} else {
+					if (date) {
+						$("#delForm").submit();
+					}
 				}
+			} else {
+				// yao闭合
+				//判断表单是否符合提交条件
+				if (length > 0) {
+					if (date) {
+						$("#delForm").submit();
+					} else {
+						$("#deptDiv").addClass("unActive");
+					}
+				} else {
+					$("#deptDiv").addClass("unActive");
+					return false;
+				}
+
 			}
 		})
-	})	
-	
+	})
+
 	$(function() {
 		/*init webuploader*/
 		var $list = $("#thelist"); //这几个初始化全局的百度文档上没说明，好蛋疼。  
@@ -105,24 +155,24 @@
 		uploader.on('uploadSuccess', function(file, response) {
 			alert(response.msg);
 		});
-		
-		// 当有文件添加进来的时候  
-		uploader.on(
-			'fileQueued',
-			function(file) { // webuploader事件.当选择文件后，文件被加载到文件队列中，触发该事件。等效于 uploader.onFileueued = function(file){...} ，类似js的事件定义。  
-				var $li = $('<div id="' + file.id + '" class="file-item thumbnail">'
-						+ '<img>'
-						+ '<div class="info">'
-						+ file.name + '</div>' + '</div>'), $img = $li
-						.find('img');
-				// $list为容器jQuery实例  
-				$list.append($li);
-		});
 
-		
-		 uploader.on( 'uploadComplete', function( file ) {  
-			 $list.empty();
-		   }); 
+		// 当有文件添加进来的时候  
+		uploader
+				.on(
+						'fileQueued',
+						function(file) { // webuploader事件.当选择文件后，文件被加载到文件队列中，触发该事件。等效于 uploader.onFileueued = function(file){...} ，类似js的事件定义。  
+							var $li = $('<div id="' + file.id + '" class="file-item thumbnail">'
+									+ '<img>'
+									+ '<div class="info">'
+									+ file.name + '</div>' + '</div>'), $img = $li
+									.find('img');
+							// $list为容器jQuery实例  
+							$list.append($li);
+						});
+
+		uploader.on('uploadComplete', function(file) {
+			$list.empty();
+		});
 		$btn.on('click', function() {
 			uploader.upload();
 		});
@@ -216,24 +266,28 @@
 	</div>
 	<div
 		style="position: relative; left: 50%; top: 392px; width: 600px; height: auto; margin-left: -300px; background-color: #ebebeb; border: 1px solid #000; border-radius: 20px; padding: 10px;">
-		<form id="delForm" action="${ctx}/precision/delDat" method="post" onsubmit="return delDat()">
-			<input type="text" id="datepicker" name="date" />
+		<form id="delForm" action="${ctx}/precision/delDat" method="post"
+			onsubmit="return delDat()">
+			<input type="text" id="datepicker" readonly="readonly" name="date" />
 			<div style="margin: 0 auto; width: 300px; padding-top: 50px;">
-				<div style="">
-					<input type="checkbox" name="depts">安质部
-					<input type="checkbox" name="depts">办公室
-					<input type="checkbox" name="depts">财务部
-					<input type="checkbox" name="depts">发展部
-					<input type="checkbox" name="depts">后勤部
-					<input type="checkbox" name="depts">建设部
-					<input type="checkbox" name="depts">科信部
-					<input type="checkbox" name="depts">企协分会
-					<input type="checkbox" name="depts">人资部
-					<br>
-					<input type="checkbox" name="depts">调控中心
-					<input type="checkbox" name="depts">物资部
-					<input type="checkbox" name="depts">营销部
-					<input type="checkbox" name="depts">运检部
+				<div class="unActive" id="deptDiv"
+					style="position: absolute; bottom: 0; left: 0; width: 300px; height: auto; border: 1px solid; left: 160px; bottom: 50px; background-color: #ebebeb;">
+					<input type="checkbox" name="all">全选/全不选 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" name="opposite">反选 <br>
+					<input type="checkbox" name="depts">安质部&nbsp;&nbsp;&nbsp;&nbsp; 
+					<input type="checkbox" name="depts">办公室&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" name="depts">财务部<br> 
+					<input type="checkbox" name="depts">发展部&nbsp;&nbsp;&nbsp;&nbsp; 
+					<input type="checkbox" name="depts">后勤部&nbsp;&nbsp;&nbsp;&nbsp; 
+					<input type="checkbox" name="depts">建设部<br> 
+					<input type="checkbox" name="depts">科信部&nbsp;&nbsp;&nbsp;&nbsp; 
+					<input type="checkbox" name="depts">企协分会&nbsp;
+					<input type="checkbox" name="depts">人资部<br> 
+					<input type="checkbox" name="depts">调控中心&nbsp;
+					<input type="checkbox" name="depts">物资部&nbsp;&nbsp;&nbsp;&nbsp; 
+					<input type="checkbox" name="depts">营销部<br> 
+					<input type="checkbox" name="depts">运检部 &nbsp;&nbsp;&nbsp;&nbsp;
+						
 				</div>
 				<input type="submit" id="ctlBtn1" class="btn btn-default"
 					value="删除数据">
@@ -242,7 +296,7 @@
 				<script type="text/javascript">
 					function delDat() {
 						var value = $("#datepicker").val();
-						if(value) {
+						if (value) {
 							return true;
 						} else {
 							return false;

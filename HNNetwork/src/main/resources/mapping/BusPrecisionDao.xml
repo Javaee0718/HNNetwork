@@ -42,10 +42,6 @@
 		</foreach>
 	</delete>
 
-	<!-- id year month head_dept quota_name quota_value not_end_quota_name not_end_quota_value 
-		end_quota_name end_quota_value -->
-
-
 	<!-- 查询该指标的非末端指标,指标如下:业扩报装服务规范率 -->
 	<select id="findNotEndQuotaAndValue"
 		resultType="com.womow.henan.modules.province.bean.dto.BusPrecisionEntityDo">
@@ -63,5 +59,20 @@
 		pre.`year` = #{year}
 		AND pre.`month` = #{month}
 		AND pre.quota_name = #{quotaName}
+		AND pre.not_end_quota_name != '扣分项'
+		AND pre.not_end_quota_name != '加减分项'
+		AND pre.not_end_quota_name != '减分项'
+	</select>
+	
+	<!-- 查询该日期,部门下的所有一级指标名称 -->
+	<select id="findQuotaName" resultType="java.lang.String">
+		SELECT
+			pre.quota_name
+		FROM
+			b_precision AS pre
+		WHERE
+			pre.`year` = #{year}
+		AND pre.`month` = #{month}
+		AND pre.head_dept = #{dept}
 	</select>
 </mapper>

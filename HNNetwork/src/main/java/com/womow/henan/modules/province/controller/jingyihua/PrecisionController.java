@@ -1,9 +1,6 @@
 package com.womow.henan.modules.province.controller.jingyihua;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +8,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.womow.henan.commons.utils.BaseDataUtils;
 import com.womow.henan.commons.web.BaseController;
+import com.womow.henan.modules.province.bean.dto.BusPrecisionEntityDo;
 import com.womow.henan.modules.province.service.BusPrecisionService;
 import com.womow.henan.modules.sys.security.utils.ShiroUtils;
 import com.womow.henan.modules.sys.user.dao.BusUserDao;
@@ -44,18 +41,19 @@ public class PrecisionController extends BaseController {
 	private BusUserDao busUserDao;
 
 	/**
-	 * 
+	 * 跳转至精益化指标数据导入页面
 	 */
 	@RequestMapping("toPg")
 	public String toPreImpl(Model model) {
 		Subject subject = ShiroUtils.getSubject();
 		boolean isAdmin = subject.hasRole("admin");
+		// 携带是否是管理员的角色,该页面对非管理员删除数据功能有限制
 		if (isAdmin) {
 			model.addAttribute("isAdmin", "1");
 		}
-		return "jingyihua/Quanxian_set.jsp";
+		return "jingyihua/Quanxian_set";
 	}
-	
+
 	/**
 	 * 各部门精益化文档导入
 	 * 
@@ -64,6 +62,7 @@ public class PrecisionController extends BaseController {
 	@ResponseBody
 	@RequestMapping("/precisionFile")
 	public Map<String, String> precisionFileUpload(@RequestParam("file") MultipartFile file) {
+		// 该功能要求 -> 上传者只能上传其所属部门的指标文档
 		String message = "";
 		Map<String, String> map = new HashMap<>();
 		if (file == null) {
@@ -132,14 +131,14 @@ public class PrecisionController extends BaseController {
 	 */
 	@RequestMapping("/delDat")
 	public String deleteData(Date date, String[] depts, RedirectAttributes redirectAttributes) {
+		// 要求-> 删除者,除了拥有管理员权限之外,均删除其所属部门的数据
+		// -> 管理员,可以删除多个部门的数据
 		String message = "";
 		try {
-			/*SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			Date dt = format.parse(date);*/
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
 			int year = calendar.get(Calendar.YEAR);
-			int month = calendar.get(Calendar.MONTH)+1;
+			int month = calendar.get(Calendar.MONTH) + 1;
 			// 判断是否是管理员 -> 是 -> 对部门进行解析,获取部门 ->删除
 			// -> 否 -> 获取该用户的权限与部门 ->删除
 			Subject subject = ShiroUtils.getSubject();
@@ -149,7 +148,7 @@ public class PrecisionController extends BaseController {
 					if (depts.length == 0) {
 						message = "请选择部门";
 						addMessage(redirectAttributes, message);
-						return "redirect:/jingyihua/Quanxian_set";
+						return "redirect:toPg";
 					} else {
 						busPrecisionService.delteDat(year, month, depts);
 					}
@@ -160,30 +159,71 @@ public class PrecisionController extends BaseController {
 			}
 			message = "删除成功";
 			addMessage(redirectAttributes, message);
-			return "redirect:/incl/jingyihua/Quanxian_set";
+			return "redirect:toPg";
 		} catch (Exception e) {
 			message = "删除失败";
 			addMessage(redirectAttributes, message);
 			logger.warn(BaseDataUtils.dateToString(new Date()) + this.getClass() + e.getMessage());
-			return "redirect:/incl/jingyihua/Quanxian_set";
+			return "redirect:toPg";
 		}
 	}
-	
+
 	/**
-	 * 精益化指标中间层页面四个末端指标读取方法
+	 * 精益化一级指标 跳转至 -> 精益化指标中间层展示页面
+	 * 
+	 * @param quotaName
+	 *            指标名称
+	 * @return String 逻辑视图
 	 */
-	@RequestMapping("/onePre")
-	public String onePageView(Date date) {
+	@RequestMapping("/preQuota")
+	public String onePageView(Date date, String quotaName, Model model) {
 		/**
-		 * 首页点击某图表 (源头:预警相关数据库): -> 
-		 * 					展示相关精益化一级指标 (源头 : 根据上页面源头库,可获取精益化一级指标名 -> 然后根据页面,去查询相关精益化指标,跳转至某一页面 )
-		 * 		++> : 所以:精益化统计首页,一级指标页 ,目前均不能开发. ->需等待预警指标确定后再进行相关开发操作.
+		 * 首页点击某图表 (源头:预警相关数据库): -> 展示相关精益化一级指标 (源头 : 根据上页面源头库,可获取精益化一级指标名 ->
+		 * 然后根据页面,去查询相关精益化指标,跳转至某一页面 ) ++> : 所以:精益化统计首页,一级指标页 ,目前均不能开发.
+		 * ->需等待预警指标确定后再进行相关开发操作.
+		 */
+		/**
+		 * 思路: 再一个大的controller中,判断是哪一个指标,然后统一调用service提供的对应指标的接口,进行开发
 		 */
 		try {
-			
+			if (date != null) {
+				int year = date.getYear();
+				int month = date.getMonth() + 1;
+				if ("业扩报装服务规范率".equals(quotaName)) {
+					/*--------------  该三个指标非末端指标结构类似  start  --------------*/
+					List<BusPrecisionEntityDo> list = busPrecisionService.notEndQuotaQuery(year, month, quotaName);
+					return "jingyihua/newPage1";
+				} else if ("智能电网调度功能应用完成率".equals(quotaName)) {
+					List<BusPrecisionEntityDo> list = busPrecisionService.notEndQuotaQuery(year, month, quotaName);
+					return "jingyihua/newPage4";
+				} else if ("信息通信系统运行指数".equals(quotaName)) {
+					List<BusPrecisionEntityDo> list = busPrecisionService.notEndQuotaQuery(year, month, quotaName);
+					return "jingyihua/newPage7";
+					/*--------------  该三个指标非末端指标结构类似  end  --------------*/
+				} else if ("优质服务评价指数".equals(quotaName)) {
+					/*--------------  该四个指标非末端指标结构类似  start  --------------*/
+					List<BusPrecisionEntityDo> list = busPrecisionService.notEndQuotaQuery(year, month, quotaName);
+					// 扣分项 -> 四个末端指标
+					return "jingyihua/newPage6";
+				} else if ("物资采购计划完成率".equals(quotaName)) {
+					List<BusPrecisionEntityDo> list = busPrecisionService.notEndQuotaQuery(year, month, quotaName);
+					// 加减分项 ->四个末端指标
+					return "jingyihua/newPage2";
+				} else if ("物资合同履约完成率".equals(quotaName)) {
+					List<BusPrecisionEntityDo> list = busPrecisionService.notEndQuotaQuery(year, month, quotaName);
+					// 减分项 ->五个末端指标
+					return "jingyihua/newPage3";
+				} else if ("营销服务规范率".equals(quotaName)) {
+					List<BusPrecisionEntityDo> list = busPrecisionService.notEndQuotaQuery(year, month, quotaName);
+					// 加减分项 ->三个末端指标
+					return "jingyihua/newPage5";
+					/*--------------  该四个指标非末端指标结构类似  end  --------------*/
+				}
+			}
 		} catch (Exception e) {
-			
+			logger.warn(e.getMessage());
 		}
+		logger.warn(BaseDataUtils.dateToString(new Date()) + " 没有匹配到该指标");
 		return null;
 	}
 }

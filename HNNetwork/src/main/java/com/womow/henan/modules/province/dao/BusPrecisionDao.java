@@ -21,4 +21,13 @@ public interface BusPrecisionDao extends BaseDao<BusPrecisionEntityDo> {
 	List<BusPrecisionEntityDo> findNotEndQuotaAndValue(@Param("year") int year, @Param("month") int month,
 			@Param("quotaName") String quotaName);
 
+	/**
+	 * 根据部门 日期 查询一级指标名称
+	 * @param year
+	 * @param month
+	 * @param dept
+	 * @return
+	 */
+	List<String> findQuotaName(@Param("year") int year,@Param("month") int month,@Param("dept") String dept);
+
 }
