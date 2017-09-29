@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.womow.henan.modules.province.dao.BusWarningDao">
+
+	<sql id="warnField">
+		warn.id,
+		warn.warn_year,
+		warn.warn_month,
+		warn.warn_quota,
+		warn.warn_end_quota,
+		warn.head_dept,
+		warn.warn_reason,
+		warn.warn_grade,
+		warn.create_user_id,
+		warn.create_date,
+		warn.update_user_id,
+		warn.update_date
+	</sql>
+
+	<!-- 查询数据库中最新的年,月 -->
+	<select id="findYearAndMonth" resultType="com.womow.henan.modules.province.bean.dto.BusWarningEntityDo">
+		SELECT DISTINCT
+			warn.warn_year,
+			MAX(warn.warn_month) as warn_month
+		FROM
+			b_warning AS warn
+		WHERE
+			warn.warn_year = (
+				SELECT
+					max(warn_year)
+				FROM
+					b_warning
+			)
+	</select>
+	
+	<!-- 通过年月,预警等级查询该等级下的指标个数 -->
+	<!-- 统计该表中该年,该月的数据总量  -->
+	<select id="queryWarnNum" resultType="java.lang.Integer">
+		SELECT
+			COUNT(1) AS num
+		FROM
+			b_warning AS warn
+		WHERE
+			warn.warn_grade = #{warnGrade}
+		AND warn.warn_year = #{year}
+		<if test="warnGrade != null">
+			AND warn.warn_month = #{month}
+		</if>
+		<if test="dept != null and !dept.equals('')">
+			AND warn.head_dept = #{dept}
+		</if>
+	</select>
+	
+	<!--  -->
+	<select id="queryWarnQuota" resultType="com.womow.henan.modules.province.bean.dto.BusWarningEntityDo">
+		SELECT
+			<include refid="warnField"/>
+		FROM
+			b_warning AS warn
+		WHERE
+			warn.warn_year = #{year}
+		AND warn.warn_month = #{month}
+		ORDER BY
+			warn.create_date asc
+	</select>
+</mapper>

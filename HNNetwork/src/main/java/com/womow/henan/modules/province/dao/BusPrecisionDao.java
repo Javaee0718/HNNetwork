@@ -30,4 +30,14 @@ public interface BusPrecisionDao extends BaseDao<BusPrecisionEntityDo> {
 	 */
 	List<String> findQuotaName(@Param("year") int year,@Param("month") int month,@Param("dept") String dept);
 
+	/**
+	 * 统计某年某月数据总量
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	Integer queryNum(@Param("year") int year,@Param("month") int month);
+
+	
+
 }

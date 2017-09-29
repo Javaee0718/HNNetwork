@@ -64,9 +64,14 @@
 	$(function() {
 		// 全选
 		$(":checkbox[name='all']").click(function() {
+			var isSelect = $(":checkbox[name='all']").prop("checked");
+			if(isSelect) {
+				$(":checkbox[name='opposite']").prop("checked",false);
+			}
 			$(":checkbox[name='depts']").each(function() {
 				$(this).prop("checked",$(":checkbox[name='all']").prop("checked"));
 			})
+			
 		})
 		// 反选
 		$(":checkbox[name='opposite']").click(function() {
@@ -74,6 +79,7 @@
 				var isSelect = $(this).prop("checked");			
 				if(isSelect) {
 					 $(this).prop("checked",false);
+					 $(":checkbox[name='all']").prop("checked",false);
 				} else {
 					 $(this).prop("checked",true);
 				}
@@ -81,7 +87,51 @@
 		})
 	})
 	/* 删除数据  */
+	function delDat() {
+			var value = $("#datepicker").val();
+			var isAdmin = '${isAdmin}';
+			var length = $("input:checkbox:checked").length;
+			if(isAdmin == '1'){
+				if(length > 0) {
+					if(value) {
+						return true;
+					} 
+				}
+				return false;
+			} else {
+				if (value) {
+					return true;
+				}
+				return false;
+			}
+	}
+	//取消按钮
 	$(function() {
+		$("#reset").click(function() {
+			$("#deptDiv").addClass("unActive");
+		})
+	})
+	$(function() {
+		$("#ctlBtn1").click(function() {
+			var isAdmin = '${isAdmin}';
+			var status = $("#deptDiv").hasClass("unActive");
+			var length = $("input:checkbox:checked").length;
+			var date = $("#datepicker").val();
+			// yao展开
+			if (status) {
+				if (isAdmin == '1') {
+					$("#deptDiv").removeClass("unActive");
+				}
+			} else {
+				// yao闭合
+				//判断表单是否符合提交条件
+				$("#deptDiv").addClass("unActive");
+			}
+		})
+		
+	})
+	
+	/* $(function() {
 		$("#ctlBtn1").click(function() {
 			var isAdmin = '${isAdmin}';
 			var status = $("#deptDiv").hasClass("unActive");
@@ -119,7 +169,7 @@
 
 			}
 		})
-	})
+	}) */
 
 	$(function() {
 		/*init webuploader*/
@@ -265,13 +315,13 @@
 		</div>
 	</div>
 	<div
-		style="position: relative; left: 50%; top: 392px; width: 600px; height: auto; margin-left: -300px; background-color: #ebebeb; border: 1px solid #000; border-radius: 20px; padding: 10px;">
+		style="position: relative; left: 50%; top: 292px; width: 600px; height: auto; margin-left: -300px; background-color: #ebebeb; border: 1px solid #000; border-radius: 20px; padding: 10px;">
 		<form id="delForm" action="${ctx}/precision/delDat" method="post"
 			onsubmit="return delDat()">
 			<input type="text" id="datepicker" readonly="readonly" name="date" />
 			<div style="margin: 0 auto; width: 300px; padding-top: 50px;">
 				<div class="unActive" id="deptDiv"
-					style="position: absolute; bottom: 0; left: 0; width: 300px; height: auto; border: 1px solid; left: 160px; bottom: 50px; background-color: #ebebeb;">
+					style="position: absolute; bottom: 0;width: 300px;top: 94px; height:  130px; border: 1px solid; left: 160px; bottom: 50px; background-color: #ebebeb;">
 					<input type="checkbox" name="all">全选/全不选 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="checkbox" name="opposite">反选 <br>
 					<input type="checkbox" name="depts">安质部&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -287,22 +337,12 @@
 					<input type="checkbox" name="depts">物资部&nbsp;&nbsp;&nbsp;&nbsp; 
 					<input type="checkbox" name="depts">营销部<br> 
 					<input type="checkbox" name="depts">运检部 &nbsp;&nbsp;&nbsp;&nbsp;
-						
+					<input type="submit" style="background: #00b7ee; color: white;line-height: 15px;" value="提交">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="reset" id="reset" style="background: #00b7ee; color: white;line-height: 15px;" value="取消">
 				</div>
-				<input type="submit" id="ctlBtn1" class="btn btn-default"
-					value="删除数据">
+				<input type="button" id="ctlBtn1" style="left:70px;" class="btn btn-default" value="删除数据">
 				<!-- <button id="ctlBtn1" class="btn btn-default">删除数据</button> -->
-				<button id="ctlBtn2" class="btn btn-default">指定日期</button>
-				<script type="text/javascript">
-					function delDat() {
-						var value = $("#datepicker").val();
-						if (value) {
-							return true;
-						} else {
-							return false;
-						}
-					}
-				</script>
+				<button id="ctlBtn2" style="right:70px;" class="btn btn-default">指定日期</button>
 			</div>
 		</form>
 	</div>

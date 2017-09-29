@@ -1,40 +1,43 @@
 package com.womow.henan.modules.province.bean.po;
 
+import com.womow.henan.commons.bean.BaseEntity;
+
 /**
- * 精益化指标预警实体类
+ * 精益化指标预警信息统计实体类
  * @author root
  */
+public class BusWarningEntity extends BaseEntity{
 
-public class BusWarningEntity {
-
-	private int id;
-	private int year;
-	private int month;
-	private String headDept;
-	private String quotaName;
-	private double quotaValue;
-	private String notEndQuotaName;
-	private double notEndQuotaValue;
-	private String endQuotaName;
-	private double endQuotaValue;
-	
-	public int getId() {
-		return id;
+	private int warnYear; //年
+	private int warnMonth; //月
+	private String warnQuota; //预警一级指标名
+	private String warnEndQuota; //预警末端指标名
+	private String headDept; //牵头部门
+	private String warnReason; //预警原因
+	private String warnGrade; //预警等级 --> 等级分为1,2,3 共三个等级
+	public int getWarnYear() {
+		return warnYear;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setWarnYear(int warnYear) {
+		this.warnYear = warnYear;
 	}
-	public int getYear() {
-		return year;
+	public int getWarnMonth() {
+		return warnMonth;
 	}
-	public void setYear(int year) {
-		this.year = year;
+	public void setWarnMonth(int warnMonth) {
+		this.warnMonth = warnMonth;
 	}
-	public int getMonth() {
-		return month;
+	public String getWarnQuota() {
+		return warnQuota;
 	}
-	public void setMonth(int month) {
-		this.month = month;
+	public void setWarnQuota(String warnQuota) {
+		this.warnQuota = warnQuota;
+	}
+	public String getWarnEndQuota() {
+		return warnEndQuota;
+	}
+	public void setWarnEndQuota(String warnEndQuota) {
+		this.warnEndQuota = warnEndQuota;
 	}
 	public String getHeadDept() {
 		return headDept;
@@ -42,40 +45,16 @@ public class BusWarningEntity {
 	public void setHeadDept(String headDept) {
 		this.headDept = headDept;
 	}
-	public String getQuotaName() {
-		return quotaName;
+	public String getWarnReason() {
+		return warnReason;
 	}
-	public void setQuotaName(String quotaName) {
-		this.quotaName = quotaName;
+	public void setWarnReason(String warnReason) {
+		this.warnReason = warnReason;
 	}
-	public double getQuotaValue() {
-		return quotaValue;
+	public String getWarnGrade() {
+		return warnGrade;
 	}
-	public void setQuotaValue(double quotaValue) {
-		this.quotaValue = quotaValue;
-	}
-	public String getNotEndQuotaName() {
-		return notEndQuotaName;
-	}
-	public void setNotEndQuotaName(String notEndQuotaName) {
-		this.notEndQuotaName = notEndQuotaName;
-	}
-	public double getNotEndQuotaValue() {
-		return notEndQuotaValue;
-	}
-	public void setNotEndQuotaValue(double notEndQuotaValue) {
-		this.notEndQuotaValue = notEndQuotaValue;
-	}
-	public String getEndQuotaName() {
-		return endQuotaName;
-	}
-	public void setEndQuotaName(String endQuotaName) {
-		this.endQuotaName = endQuotaName;
-	}
-	public double getEndQuotaValue() {
-		return endQuotaValue;
-	}
-	public void setEndQuotaValue(double endQuotaValue) {
-		this.endQuotaValue = endQuotaValue;
+	public void setWarnGrade(String warnGrade) {
+		this.warnGrade = warnGrade;
 	}
 }

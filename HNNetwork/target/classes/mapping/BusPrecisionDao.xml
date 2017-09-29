@@ -75,4 +75,15 @@
 		AND pre.`month` = #{month}
 		AND pre.head_dept = #{dept}
 	</select>
+	
+	<!-- 统计某年某月数据总量 -->
+	<select id="queryNum" resultType="java.lang.Integer">
+		SELECT
+			COUNT(1)
+		FROM
+			b_precision AS pre
+		WHERE
+			pre.`year` = #{year}
+		AND pre.`month` = #{month}
+	</select>
 </mapper>

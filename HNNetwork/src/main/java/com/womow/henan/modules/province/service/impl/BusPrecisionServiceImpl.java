@@ -340,7 +340,6 @@ public class BusPrecisionServiceImpl implements BusPrecisionService {
 
 	/**
 	 * 智能电网调度功能应用完成率
-	 * 
 	 * @param sheet
 	 * @return
 	 */
@@ -1277,10 +1276,10 @@ public class BusPrecisionServiceImpl implements BusPrecisionService {
 			}
 		}
 		busPrecisionDao.delete(map);
-
 	}
 
 	public List<BusPrecisionEntityDo> notEndQuotaQuery(int year, int month, String quotaName) throws Exception {
 		return busPrecisionDao.findNotEndQuotaAndValue(year, month, quotaName);
 	}
+
 }

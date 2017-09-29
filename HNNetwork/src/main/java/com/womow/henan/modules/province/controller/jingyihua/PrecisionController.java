@@ -1,5 +1,6 @@
 package com.womow.henan.modules.province.controller.jingyihua;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,7 +22,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.womow.henan.commons.utils.BaseDataUtils;
 import com.womow.henan.commons.web.BaseController;
 import com.womow.henan.modules.province.bean.dto.BusPrecisionEntityDo;
+import com.womow.henan.modules.province.bean.dto.BusWarningEntityDo;
+import com.womow.henan.modules.province.dao.BusWarningDao;
 import com.womow.henan.modules.province.service.BusPrecisionService;
+import com.womow.henan.modules.province.service.BusWarningService;
 import com.womow.henan.modules.sys.security.utils.ShiroUtils;
 import com.womow.henan.modules.sys.user.dao.BusUserDao;
 
@@ -38,7 +42,11 @@ public class PrecisionController extends BaseController {
 	@Autowired
 	private BusPrecisionService busPrecisionService;
 	@Autowired
+	private BusWarningService busWarningService;
+	@Autowired
 	private BusUserDao busUserDao;
+	@Autowired
+	private BusWarningDao busWarningDao;
 
 	/**
 	 * 跳转至精益化指标数据导入页面
@@ -56,7 +64,6 @@ public class PrecisionController extends BaseController {
 
 	/**
 	 * 各部门精益化文档导入
-	 * 
 	 * @return
 	 */
 	@ResponseBody
@@ -167,12 +174,64 @@ public class PrecisionController extends BaseController {
 			return "redirect:toPg";
 		}
 	}
+	
+	/**
+	 * 精益化指标首页--信息统计展示页
+	 */
+	@RequestMapping("/preIndexView")
+	public String preIndexView(Date date) {
+		try {
+			//获取日期,
+			//如果没有 去数据库中获取最新的日期数据
+			//根据日期与等级获取数据库中的预警指标数量
+			int year;
+			int month;
+			if (date == null) {
+				BusWarningEntityDo bean = busWarningDao.findYearAndMonth();
+				year = year = bean.getWarnYear();
+				month = bean.getWarnMonth();
+				date.setYear(year);
+				date.setMonth(month-1);
+			}else {
+				year = date.getYear();
+				month = date.getMonth()+1;
+			}
+			// 指标监控详情
+			Integer[] nums = busWarningService.quotaMonitorDetail(year,month);
+			// 问题汇总
+			List<BusWarningEntityDo> warnQus = busWarningService.queryWarnQuota(year,month);
+			// 监控结果趋势统计 (6个月之内)
+			// -> i1=> calendar对象, i2=> num.
+			List<List<Object>> dateAndNums = busWarningService.monitorTrend(date);
+			// 部门问题统计
+			List<List<Object>> deptAndNums = busWarningService.deptCount(year,month);
+		} catch (Exception e) {
+			
+		}
+		return null;
+	}
+	
+	/**
+	 * 精益化指标信息统计页跳转至精益化指标首页的方法
+	 * @param year 年
+	 * @param month 月
+	 * @param notEndQuotaName 非末端指标名称
+	 */
+	@RequestMapping("")
+	public String toPreIndView(String date) {
+		try {
+			if (!"".equals(date)) {
+				
+			}
+		} catch (Exception e) {
+			
+		}
+		return null;
+	}
 
 	/**
 	 * 精益化一级指标 跳转至 -> 精益化指标中间层展示页面
-	 * 
-	 * @param quotaName
-	 *            指标名称
+	 * @param quotaName 指标名称
 	 * @return String 逻辑视图
 	 */
 	@RequestMapping("/preQuota")
@@ -192,6 +251,16 @@ public class PrecisionController extends BaseController {
 				if ("业扩报装服务规范率".equals(quotaName)) {
 					/*--------------  该三个指标非末端指标结构类似  start  --------------*/
 					List<BusPrecisionEntityDo> list = busPrecisionService.notEndQuotaQuery(year, month, quotaName);
+					List<Object> quotaNames = new ArrayList<>();
+					List<Object> valuelists = new ArrayList<>();
+					if (list != null) {
+						for (BusPrecisionEntityDo bean : list) {
+							quotaNames.add(bean.getNotEndQuotaName());
+							valuelists.add(bean.getNotEndQuotaValue());
+						}
+					}
+					model.addAttribute("quotaNames", quotaNames);
+					model.addAttribute("quotaValues", valuelists);
 					return "jingyihua/newPage1";
 				} else if ("智能电网调度功能应用完成率".equals(quotaName)) {
 					List<BusPrecisionEntityDo> list = busPrecisionService.notEndQuotaQuery(year, month, quotaName);
