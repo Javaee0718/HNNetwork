@@ -51,7 +51,7 @@
 		</if>
 	</select>
 	
-	<!--  -->
+	<!-- 查询该年该月的预警指标列表,按创建时间降序 -->
 	<select id="queryWarnQuota" resultType="com.womow.henan.modules.province.bean.dto.BusWarningEntityDo">
 		SELECT
 			<include refid="warnField"/>
@@ -62,5 +62,46 @@
 		AND warn.warn_month = #{month}
 		ORDER BY
 			warn.create_date asc
+	</select>
+	
+	<!-- 查询该部门的问题统计个数 -->
+	<select id="queryDeptAndNum" resultType="com.womow.henan.modules.province.bean.dto.BusWarningEntityDo">
+		SELECT
+			COUNT(1) AS num,
+			warn.head_dept
+		FROM
+			b_warning AS warn
+		GROUP BY
+			warn.head_dept
+		HAVING
+			warn.warn_year = #{year}
+		AND warn.warn_month = #{month}
+		ORDER BY
+			num DESC
+	</select>
+	
+	<!--  -->
+	<select id="deptAndGradeSort" resultType="com.womow.henan.modules.province.bean.dto.BusWarningEntityDo">
+		select
+			
+		from b_warning as wr
+		where wr
+	
+		SELECT
+			COUNT(1) AS num,
+			warn.warn_quota,
+			warn.warn_grade
+		FROM
+			b_warning AS warn
+		GROUP BY
+			warn.warn_quota,
+			warn.warn_grade
+		HAVING
+			warn.warn_year = #{year}
+		AND warn.warn_month = #{month}
+		ORDER BY
+			num DESC
+		LIMIT
+			#{offset},#{limit}
 	</select>
 </mapper>

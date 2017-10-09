@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.womow.henan.commons.bean.Query;
 import com.womow.henan.commons.utils.BaseDataUtils;
 import com.womow.henan.commons.web.BaseController;
 import com.womow.henan.modules.province.bean.dto.BusPrecisionEntityDo;
@@ -218,11 +219,14 @@ public class PrecisionController extends BaseController {
 	 * @param notEndQuotaName 非末端指标名称
 	 */
 	@RequestMapping("")
-	public String toPreIndView(String date) {
+	public String toPreIndView(@RequestParam Query query) {
 		try {
-			if (!"".equals(date)) {
-				
-			}
+			//if (!"".equals(date)) {
+				/**
+				 * 查询每个等级的个数,然后排序.共1,2,3
+				 */
+			List<BusPrecisionEntityDo> list = busWarningService.sortQuery(query);
+			//}
 		} catch (Exception e) {
 			
 		}
